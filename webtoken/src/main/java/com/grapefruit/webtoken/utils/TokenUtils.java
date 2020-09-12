@@ -44,7 +44,11 @@ public class TokenUtils {
         return uuid;
     }
 
-    //生成token
+    /**
+     * 生成token
+     *
+     * @return 返回token字符串
+     */
     public static String createToken() {
         //设置过期时间
         Date date = new Date(System.currentTimeMillis() + EXPIRE_Time);
@@ -68,7 +72,12 @@ public class TokenUtils {
         return token;
     }
 
-    //校验toke
+    /**
+     * 校验toke
+     *
+     * @param token
+     * @return 判断token是否有效
+     */
     public static boolean checkToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);

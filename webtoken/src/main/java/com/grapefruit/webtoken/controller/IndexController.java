@@ -3,14 +3,14 @@ package com.grapefruit.webtoken.controller;
 import com.grapefruit.webtoken.utils.StringUtils;
 import com.grapefruit.webtoken.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -56,10 +56,12 @@ public class IndexController {
         }
     }
 
+    //后台页面
     @GetMapping("/backstage")
     public String backstage(){
         return "这里是后台" + new SimpleDateFormat("yyyyMMdd HH:mm:ss SSS").format(new Date());
     }
+
     //退出
     @GetMapping("/logout")
     public String logout(HttpServletRequest request){
