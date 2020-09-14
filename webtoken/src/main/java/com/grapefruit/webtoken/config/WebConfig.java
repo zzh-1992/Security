@@ -1,6 +1,5 @@
 package com.grapefruit.webtoken.config;
 
-
 import com.grapefruit.webtoken.config.interceptor.MyInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

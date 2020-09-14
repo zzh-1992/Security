@@ -8,9 +8,9 @@ package com.grapefruit.webtoken.utils;
 public class StringUtils {
 
     /**
-     * 处理token中的"."和"/"字符
+     * 处理token中的"."字符
      * @param str
-     * @return
+     * @return 处理后的token字符串
      */
     public static String strReplace(String str){
         return str.replace(".","");

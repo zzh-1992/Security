@@ -8,6 +8,7 @@ package com.grapefruit.token.controller;
 
 import com.grapefruit.token.entity.Stu;
 import com.grapefruit.token.utils.TokenTest;
+import com.grapefruit.token.utils.TokenUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +37,7 @@ public class IndexController {
         if (!stu.getPassword().equals("123")) {
             return "密码错误";
         } else {
-            String token = TokenTest.sign();
+            String token = TokenUtils.generateToken();
             return token;
         }
     }
@@ -48,7 +49,7 @@ public class IndexController {
 
         System.out.println("index token:" + headerToken);
 
-        boolean isLogin = TokenTest.checkToken(headerToken);
+        boolean isLogin = TokenUtils.checkToken(headerToken);
 
         if (isLogin) {
             return "会话状态持续";
