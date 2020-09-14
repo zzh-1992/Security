@@ -1,7 +1,7 @@
 package com.grapefruit.webtoken.utils;
 
 /**
- * @author 柚子苦瓜茶
+ * @author Grapefruit
  * @version 1.0
  * @ModifyTime 2020/9/12 13:51:19
  */

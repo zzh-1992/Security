@@ -31,7 +31,4 @@ public class TokenTest {
 
         TokenUtils.getContentFromToken(token);
     }
-
-
-
 }

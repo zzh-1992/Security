@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author 柚子苦瓜茶
+ * @author Grapefruit
  * @version 1.0
  * @ModifyTime 2020/9/12 11:38:09
  */
@@ -38,6 +38,7 @@ public class IndexController {
     public String login(@RequestParam(value = "name") String name,
                         @RequestParam(value = "password") String password,
                         HttpServletResponse response){
+        //先固定用户名和密码
         if("zzz".equals(name) && "123".equals(password)){
             //登陆成功就生成token并写入响应头
             String token = TokenUtils.createToken();

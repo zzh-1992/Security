@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 /**
- * @author 柚子苦瓜茶
+ * @author Grapefruit
  * @version 1.0
  * @ModifyTime 2020/7/15 15:06
  */

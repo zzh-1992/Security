@@ -11,15 +11,14 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * @author 柚子苦瓜茶
+ * @author Grapefruit
  * @version 1.0
  * @ModifyTime 2020/9/9 19:21:10
  */
 public class TokenUtils {
 
-    //过期时间(30分钟)
+    //Expire Time(30分钟)
     public static final long EXPIRE_Time = 30 * 60 * 1000;
-    //public static final long EXPIRE_Time = 60 * 1000;
 
     public static final String TOKEN_SECRET = "d621d333dec745fd8d44ad38428714de";
 
