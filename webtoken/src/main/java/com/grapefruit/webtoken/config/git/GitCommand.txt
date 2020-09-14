@@ -1,0 +1,26 @@
+GitCommand
+
+添加文件
+git add (根目录 /g/Security 添加的时候文件路径采用相对路径)
+    git add webtoken/src/main/java/com/grapefruit/webtoken/config/git/GitCommand.txt
+
+git status
+    git status -s
+    AM 状态的意思是这个文件在我们将它添加到缓存之后又有改动
+
+将暂存区的的内容添加到本地仓库
+git commit
+    git commit -m [message]
+    git commit -m "add GitCommand"
+
+命用于从将本地的分支版本上传到远程并合并
+git push
+    git push -u origin master (推送到gitee)
+    git push -u github master (推送到github)
+
+giy amend 在最后一次提交代码后,之后再对之前提交的代码做修改的时候使用该命令
+    git commit --amend webtoken/src/main/java/com/grapefruit/webtoken/config/git/GitCommand.txt
+
+    重新git commit --amend后再执行以下命令
+    git push --force-with-lease origin master (国内gitee)
+    git push --force-with-lease github master (国外github)
