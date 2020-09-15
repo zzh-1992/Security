@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
@@ -51,6 +52,13 @@ public class IndexController {
             ValueOperations<String,String> valueOperations = redisTemplate.opsForValue();
             valueOperations.set(StringUtils.strReplace(token),token,30, TimeUnit.MINUTES);
 
+            //把token写入cookie
+            Cookie cookie = new Cookie("myToken",token);
+            cookie.setMaxAge(30 * 60);
+            cookie.setSecure(true);
+
+            response.addCookie(cookie);
+
             return "登陆成功";
         } else {
             return "登陆失败";
@@ -65,10 +73,31 @@ public class IndexController {
 
     //退出
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request){
+    public String logout(HttpServletRequest request,HttpServletResponse response){
 
-        String token = request.getHeader("token");
-        //删除token
+        //再请求头里获取cookie
+        //String token = request.getHeader("token");
+
+        //从cookie获取cookie
+        //1 从cookie获取tooken
+        String token = "";
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null){
+            for (Cookie c : cookies) {
+                if("myToken".equals(c.getName())){
+                    token = c.getValue();
+                    break; //拿到cookie就跳出循环
+                }
+            }
+        }
+
+        //退出系统的时候删除cookie中的token和redis中的token
+        //1 把token写入cookie(设置cookie的生命值为0)
+        Cookie cookie = new Cookie("myToken","");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        //2 删除token
         redisTemplate.delete(StringUtils.strReplace(token));
         return "退出系统";
     }

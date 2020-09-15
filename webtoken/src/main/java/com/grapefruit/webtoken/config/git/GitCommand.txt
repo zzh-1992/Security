@@ -18,7 +18,7 @@ git push
     git push -u origin master (推送到gitee)
     git push -u github master (推送到github)
 
-giy amend 在最后一次提交代码后,之后再对之前提交的代码做修改的时候使用该命令
+git amend 在最后一次提交代码后,之后再对之前提交的代码做修改的时候使用该命令
     git commit --amend webtoken/src/main/java/com/grapefruit/webtoken/config/git/GitCommand.txt
 
     重新git commit --amend后再执行以下命令

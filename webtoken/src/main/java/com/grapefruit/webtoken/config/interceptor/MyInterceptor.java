@@ -4,11 +4,11 @@ import com.grapefruit.webtoken.utils.StringUtils;
 import com.grapefruit.webtoken.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,8 +27,28 @@ public class MyInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //1 从cookie获取tooken
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return false;
+        }
+        for (Cookie c : cookies) {
+            if("myToken".equals(c.getName())){
+                String token = c.getValue();
+                boolean checkToken = TokenUtils.checkToken(token);
+                System.out.println("开始校验cookie中的token");
+                if(checkToken){
+                    System.out.println("-----------cookie  token 有效-------------");
+                    return true;
+                } else {
+                    return false;
+                }
 
-        //从请求头获取token
+            }
+        }
+
+
+        //2 从请求头获取token
         String token = request.getHeader("token");
 
         System.out.println("请求头中的token:" + token);
