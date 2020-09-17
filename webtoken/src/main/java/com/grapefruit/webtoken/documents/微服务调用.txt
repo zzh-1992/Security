@@ -26,7 +26,7 @@ consumer(Controller)
             }
         }
 
-Openfen
+Openfeign
 
 /**
  * @author 柚子苦瓜茶
