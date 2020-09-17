@@ -1,0 +1,53 @@
+RestTemplate
+
+consumer(Controller)
+    @GetMapping("/queryById")
+        public String queryById(int id,Model model){
+
+            //consumer:8082  grapefruit.provider.write
+            String url = "http://localhost:8081/queryById/{id}";
+            url="http://grapefruit.provider.read/stu/{id}";
+            Map<String,Object> map = new HashMap<String,Object>(1);
+            map.put("id",id);
+            ResponseEntity<Stu> forEntity = restTemplate.getForEntity(url, Stu.class, map);
+            Stu stu = forEntity.getBody();
+            Stu[] stuArray = new Stu[1];
+            stuArray[0] = stu;
+
+            model.addAttribute("stuArray",stuArray);
+
+            if(stuArray[0] != null){
+                //删除成功,跳转到index
+                return "index";
+            }else{
+                //删除失败就跳转到mess页面
+                model.addAttribute("mess","查询失败");
+                return "mess";
+            }
+        }
+
+Openfen
+
+/**
+ * @author 柚子苦瓜茶
+ * @version 1.0
+ * @ModifyTime 2020/7/30 15:09:22
+ */
+@FeignClient(value = "provider")
+public interface Service01 {
+
+    /**
+     * 依据id查询学生
+     * @param id
+     * @return
+     */
+    @GetMapping("/stu/{id}")
+    Stu queryById(@PathVariable Integer id);
+
+    /**
+     * 查询所有学生
+     * @return
+     */
+    @GetMapping("/")
+    String queryAll();
+}
