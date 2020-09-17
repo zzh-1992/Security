@@ -1,0 +1,27 @@
+
+网友博客地址:https://www.jianshu.com/p/c79f6a14f6c9
+
+@Api：修饰整个类，描述Controller的作用
+@ApiOperation：描述一个类的一个方法，或者说一个接口
+@ApiParam：单个参数描述
+@ApiModel：用对象来接收参数
+@ApiProperty：用对象接收参数时，描述对象的一个字段
+@ApiResponse：HTTP响应其中1个描述
+@ApiResponses：HTTP响应整体描述
+@ApiIgnore：使用该注解忽略这个API
+@ApiError ：发生错误返回的信息
+@ApiImplicitParam：描述一个请求参数，可以配置参数的中文含义，还可以给参数设置默认值
+@ApiImplicitParams：描述由多个 @ApiImplicitParam 注解的参数组成的请求参数列表
+
+
+
+swagger-editor-bundle.js:sourcemap:2 Mixed Content:
+The page at 'https://editor.swagger.io/' was loaded over HTTPS,
+but requested an insecure resource 'http://l0calhost:8077/login?name=zzz&password=123'.
+This request has been blocked; the content must be served over HTTPS.
+
+
+Access to fetch at 'https://localhost:8077/login?name=zzz&password=123'
+from origin 'https://editor.swagger.io' has been blocked by CORS policy:
+No 'Access-Control-Allow-Origin' header is present on the requested resource.
+If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
