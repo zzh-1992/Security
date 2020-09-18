@@ -19,7 +19,7 @@ git push
     git push -u github master (推送到github)
 
 git amend 在最后一次提交代码后,之后再对之前提交的代码做修改的时候使用该命令
-    git commit --amend webtoken/src/main/java/com/grapefruit/webtoken/config/git/GitCommand.txt
+    git commit --amend webtoken/src/main/java/com/grapefruit/webtoken/config/git/Spring.txt
 
     重新git commit --amend后再执行以下命令
     git push --force-with-lease origin master (国内gitee)
