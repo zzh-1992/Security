@@ -1,0 +1,190 @@
+Spring(bean作用域、实例化bean、依赖注入)
+spring容器中bean对象的作用域
+    singleton
+        说明：
+        (Default) Scopes a single bean definition to a single object instance for each Spring IoC container.
+        example：
+        <bean id="accountService" class="com.something.DefaultAccountService"/>
+
+        <!-- the following is equivalent, though redundant (singleton scope is the default) -->
+        <bean id="accountService" class="com.something.DefaultAccountService" scope="singleton"/>
+
+    prototype
+        Scopes a single bean definition to any number of object instances.
+
+        <bean id="accountService" class="com.something.DefaultAccountService" scope="prototype"/>
+
+    request
+        Scopes a single bean definition to the lifecycle of a single HTTP request. That is, each HTTP request has its own instance
+        of a bean created off the back of a single bean definition. Only valid in the context of a web-aware Spring ApplicationContext.
+
+        <bean id="loginAction" class="com.something.LoginAction" scope="request"/>
+
+    session
+        Scopes a single bean definition to the lifecycle of an HTTP Session. Only valid in the context of a web-aware Spring ApplicationContext.
+        <bean id="userPreferences" class="com.something.UserPreferences" scope="session"/>
+
+    application
+        Scopes a single bean definition to the lifecycle of a ServletContext. Only valid in the context of a web-aware Spring ApplicationContext.
+        <bean id="appPreferences" class="com.something.AppPreferences" scope="application"/>
+
+    websocket
+        Scopes a single bean definition to the lifecycle of a WebSocket. Only valid in the context of a web-aware Spring ApplicationContext.
+
+实例化bean(对象)
+
+Instantiation with a Constructor
+    <bean id="exampleBean" class="examples.ExampleBean"/>
+    <bean name="anotherExample" class="examples.ExampleBeanTwo"/>
+    Instantiation with a Static Factory Method(In this example, the createInstance() method must be a static method)
+    <bean id="clientService"
+        class="examples.ClientService"
+        factory-method="createInstance"/>
+
+    public class ClientService {
+        private static ClientService clientService = new ClientService();
+        private ClientService() {}
+
+        public static ClientService createInstance() {
+            return clientService;
+        }
+    }
+
+    Instantiation by Using an Instance Factory Method
+    <!-- the factory bean, which contains a method called createInstance() -->
+    <bean id="serviceLocator" class="examples.DefaultServiceLocator">
+        <!-- inject any dependencies required by this locator bean -->
+    </bean>
+
+    <!-- the bean to be created via the factory bean -->
+        <bean id="clientService"
+            factory-bean="serviceLocator"
+            factory-method="createClientServiceInstance"/>
+
+        public class DefaultServiceLocator {
+
+            private static ClientService clientService = new ClientServiceImpl();
+
+            public ClientService createClientServiceInstance() {
+                return clientService;
+            }
+        }
+
+    <-- One factory class can also hold more than one factory method, as the following example shows: -->
+        <bean id="serviceLocator" class="examples.DefaultServiceLocator">
+            <!-- inject any dependencies required by this locator bean -->
+        </bean>
+
+        <bean id="clientService"
+            factory-bean="serviceLocator"
+            factory-method="createClientServiceInstance"/>
+
+        <bean id="accountService"
+            factory-bean="serviceLocator"
+            factory-method="createAccountServiceInstance"/>
+
+        public class DefaultServiceLocator {
+
+            private static ClientService clientService = new ClientServiceImpl();
+
+            private static AccountService accountService = new AccountServiceImpl();
+
+            public ClientService createClientServiceInstance() {
+                return clientService;
+            }
+
+            public AccountService createAccountServiceInstance() {
+                return accountService;
+            }
+        }
+
+Dependency Injection(依赖注入)
+Constructor-based Dependency Injection(构造注入)
+    example:
+        public class ThingOne {
+
+            public ThingOne(ThingTwo thingTwo, ThingThree thingThree) {
+                // ...
+            }
+        }
+
+        <beans>
+            <bean id="beanOne" class="x.y.ThingOne">
+                <constructor-arg ref="beanTwo"/>
+                <constructor-arg ref="beanThree"/>
+            </bean>
+
+            <bean id="beanTwo" class="x.y.ThingTwo"/>
+
+            <bean id="beanThree" class="x.y.ThingThree"/>
+        </beans>
+
+    example
+        public class ExampleBean {
+
+            // Number of years to calculate the Ultimate Answer
+            private int years;
+
+            // The Answer to Life, the Universe, and Everything
+            private String ultimateAnswer;
+
+            public ExampleBean(int years, String ultimateAnswer) {
+                this.years = years;
+                this.ultimateAnswer = ultimateAnswer;
+            }
+        }
+
+        Constructor argument type matching(使用属性的类型)
+        <bean id="exampleBean" class="examples.ExampleBean">
+            <constructor-arg type="int" value="7500000"/>
+            <constructor-arg type="java.lang.String" value="42"/>
+        </bean>
+
+        Constructor argument index(使用属性的下标)
+        <bean id="exampleBean" class="examples.ExampleBean">
+            <constructor-arg index="0" value="7500000"/>
+            <constructor-arg index="1" value="42"/>
+        </bean>
+
+        Constructor argument name(使用属性的名称)
+        <bean id="exampleBean" class="examples.ExampleBean">
+            <constructor-arg name="years" value="7500000"/>
+            <constructor-arg name="ultimateAnswer" value="42"/>
+        </bean>
+
+Setter-based Dependency Injection(setter注入)
+    Examples of Dependency Injection
+        <bean id="exampleBean" class="examples.ExampleBean">
+            <!-- setter injection using the nested ref element -->
+            <property name="beanOne">
+                <ref bean="anotherExampleBean"/>
+            </property>
+
+            <!-- setter injection using the neater ref attribute -->
+            <property name="beanTwo" ref="yetAnotherBean"/>
+            <property name="integerProperty" value="1"/>
+        </bean>
+
+        <bean id="anotherExampleBean" class="examples.AnotherBean"/>
+        <bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
+
+        public class ExampleBean {
+
+            private AnotherBean beanOne;
+
+            private YetAnotherBean beanTwo;
+
+            private int i;
+
+            public void setBeanOne(AnotherBean beanOne) {
+                this.beanOne = beanOne;
+            }
+
+            public void setBeanTwo(YetAnotherBean beanTwo) {
+                this.beanTwo = beanTwo;
+            }
+
+            public void setIntegerProperty(int i) {
+                this.i = i;
+            }
+        }

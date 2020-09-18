@@ -1,6 +1,10 @@
 Poingcut
 官网地址:https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html#aop-pointcuts-examples
 
+execution(modifiers-pattern? ret-type-pattern declaring-type-pattern?name-pattern(param-pattern)
+                throws-pattern?)
+             修饰符 返回值类型 包名类名 方法参数 异常
+
 The execution of any public method:
     execution(public * *(..))
 
@@ -11,9 +15,11 @@ The execution of any method defined by the AccountService interface:
     execution(* com.xyz.service.AccountService.*(..))
 
 The execution of any method defined in the service package:
+====================在service包里的任意方法====================
     execution(* com.xyz.service.*.*(..))
 
 The execution of any method defined in the service package or one of its sub-packages:
+====================在service包或是子包里的任意方法====================
     execution(* com.xyz.service..*.*(..))
 
 Any join point (method execution only in Spring AOP) within the service package:
