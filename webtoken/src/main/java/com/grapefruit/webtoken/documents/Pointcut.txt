@@ -1,4 +1,4 @@
-Poingcut
+Pointcut
 官网地址:https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html#aop-pointcuts-examples
 
 execution(modifiers-pattern? ret-type-pattern declaring-type-pattern?name-pattern(param-pattern)

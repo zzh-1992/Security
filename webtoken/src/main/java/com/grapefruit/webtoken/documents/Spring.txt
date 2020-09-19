@@ -1,5 +1,6 @@
 Spring(bean作用域、实例化bean、依赖注入)  2020年9月
 1、spring容器中bean对象的作用域
+    官网地址:https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html#beans-factory-scopes
     singleton
         说明：
         (Default) Scopes a single bean definition to a single object instance for each Spring IoC container.
@@ -32,8 +33,8 @@ Spring(bean作用域、实例化bean、依赖注入)  2020年9月
         Scopes a single bean definition to the lifecycle of a WebSocket. Only valid in the context of a web-aware Spring ApplicationContext.
 
 2、实例化bean(对象)
-
-Instantiation with a Constructor
+    Instantiation with a Constructor
+    官网地址:https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html#beans-factory-class
     <bean id="exampleBean" class="examples.ExampleBean"/>
     <bean name="anotherExample" class="examples.ExampleBeanTwo"/>
     Instantiation with a Static Factory Method(In this example, the createInstance() method must be a static method)
@@ -99,7 +100,8 @@ Instantiation with a Constructor
         }
 
 3、Dependency Injection(依赖注入)
-Constructor-based Dependency Injection(构造注入)
+    官网地址:https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html#beans-dependencies
+    Constructor-based Dependency Injection(构造注入)
     example:
         public class ThingOne {
 
@@ -152,7 +154,7 @@ Constructor-based Dependency Injection(构造注入)
             <constructor-arg name="ultimateAnswer" value="42"/>
         </bean>
 
-Setter-based Dependency Injection(setter注入)
+    Setter-based Dependency Injection(setter注入)
     Examples of Dependency Injection
         <bean id="exampleBean" class="examples.ExampleBean">
             <!-- setter injection using the nested ref element -->
