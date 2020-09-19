@@ -1,0 +1,1206 @@
+org.springframework.data.redis.core
+Class RedisTemplate<K,V>
+java.lang.Object
+org.springframework.data.redis.core.RedisAccessor
+org.springframework.data.redis.core.RedisTemplate<K,V>
+Type Parameters:
+K - the Redis key type against which the template works (usually a String)
+V - the Redis value type against which the template works
+All Implemented Interfaces:
+Aware, BeanClassLoaderAware, InitializingBean, RedisOperations<K,V>
+Direct Known Subclasses:
+StringRedisTemplate
+
+public class RedisTemplate<K,V>
+extends RedisAccessor
+implements RedisOperations<K,V>, BeanClassLoaderAware
+Helper class that simplifies Redis data access code.
+Performs automatic serialization/deserialization between the given objects and the underlying binary data in the Redis store.
+By default, it uses Java serialization for its objects (through JdkSerializationRedisSerializer ).
+For String intensive operations consider the dedicated StringRedisTemplate.
+
+The central method is execute, supporting Redis access code implementing the RedisCallback interface.
+It provides RedisConnection handling such that neither the RedisCallback implementation nor the calling code
+needs to explicitly care about retrieving/closing Redis connections, or handling Connection lifecycle exceptions.
+For typical single step actions, there are various convenience methods.
+
+Once configured, this class is thread-safe.
+
+Note that while the template is generified, it is up to the serializers/deserializers to properly convert the given Objects to and from binary data.
+
+This is the central class in Redis support.
+
+Author(作者):
+    Costin Leau, Christoph Strobl, Ninad Divadkar, Anqing Shao, Mark Paluch, Denis Zavedeev
+See Also:
+    StringRedisTemplate
+Field Summary
+    Fields inherited from class org.springframework.data.redis.core.RedisAccessor
+logger
+Constructor Summary
+Constructors
+Constructor and Description
+    RedisTemplate()
+    Constructs a new RedisTemplate instance.
+
+Method Summary
+All MethodsInstance MethodsConcrete Methods
+Modifier and Type	Method and Description
+
+void	afterPropertiesSet()
+BoundGeoOperations<K,V>	boundGeoOps(K key)
+Returns geospatial specific operations interface bound to the given key.
+
+<HK,HV> BoundHashOperations<K,HK,HV>	boundHashOps(K key)
+Returns the operations performed on hash values bound to the given key. * @param hash key (or field) type
+
+BoundListOperations<K,V>	boundListOps(K key)
+Returns the operations performed on list values bound to the given key.
+
+BoundSetOperations<K,V>	boundSetOps(K key)
+Returns the operations performed on set values bound to the given key.
+
+<HK,HV> BoundStreamOperations<K,HK,HV>	boundStreamOps(K key)
+Returns the operations performed on Streams bound to the given key.
+
+BoundValueOperations<K,V>	boundValueOps(K key)
+Returns the operations performed on simple values (or Strings in Redis terminology) bound to the given key.
+
+BoundZSetOperations<K,V>	boundZSetOps(K key)
+Returns the operations performed on zset values (also known as sorted sets) bound to the given key.
+
+void	convertAndSend(String channel, Object message)
+Publishes the given message to the given channel.
+
+Long	countExistingKeys(Collection<K> keys)
+Count the number of keys that exist.
+
+protected RedisConnection	createRedisConnectionProxy(RedisConnection pm)
+
+Long	delete(Collection<K> keys)
+Delete given keys.
+
+Boolean	delete(K key)
+Delete given key.
+
+void	discard()
+Discard all commands issued after RedisOperations.multi().
+
+byte[]	dump(K key)
+Executes the Redis dump command and returns the results.
+
+List<Object>	exec()
+Execute a transaction, using the default RedisSerializers to deserialize any results that are byte[]s or Collections or Maps of byte[]s or Tuples.
+
+List<Object>	exec(RedisSerializer<?> valueSerializer)
+Execute a transaction, using the provided RedisSerializer to deserialize any results that are byte[]s or Collections of byte[]s.
+protected List<Object>	execRaw()
+
+<T> T	execute(RedisCallback<T> action)
+Executes the given action within a Redis connection.
+
+<T> T	execute(RedisCallback<T> action, boolean exposeConnection)
+Executes the given action object within a connection, which can be exposed or not.
+
+<T> T	execute(RedisCallback<T> action, boolean exposeConnection, boolean pipeline)
+Executes the given action object within a connection that can be exposed or not.
+
+<T> T	execute(RedisScript<T> script, List<K> keys, Object... args)
+Executes the given RedisScript
+
+<T> T	execute(RedisScript<T> script, RedisSerializer<?> argsSerializer, RedisSerializer<T> resultSerializer, List<K> keys, Object... args)
+Executes the given RedisScript, using the provided RedisSerializers to serialize the script arguments and result.
+
+<T> T	execute(SessionCallback<T> session)
+Executes a Redis session.
+
+List<Object>	executePipelined(RedisCallback<?> action)
+Executes the given action object on a pipelined connection, returning the results.
+
+List<Object>	executePipelined(RedisCallback<?> action, RedisSerializer<?> resultSerializer)
+Executes the given action object on a pipelined connection, returning the results using a dedicated serializer.
+
+List<Object>	executePipelined(SessionCallback<?> session)
+Executes the given Redis session on a pipelined connection.
+
+List<Object>	executePipelined(SessionCallback<?> session, RedisSerializer<?> resultSerializer)
+Executes the given Redis session on a pipelined connection, returning the results using a dedicated serializer.
+
+<T extends Closeable>
+T	executeWithStickyConnection(RedisCallback<T> callback)
+Allocates and binds a new RedisConnection to the actual return type of the method.
+
+Boolean	expire(K key, long timeout, TimeUnit unit)
+Set time to live for given key.
+
+Boolean	expireAt(K key, Date date)
+Set the expiration for given key as a date timestamp.
+
+List<RedisClientInfo>	getClientList()
+Request information and statistics about connected clients.
+
+RedisSerializer<?>	getDefaultSerializer()
+Returns the default serializer used by this template.
+
+Long	getExpire(K key)
+Get the time to live for key in seconds.
+
+Long	getExpire(K key, TimeUnit timeUnit)
+Get the time to live for key in and convert it to the given TimeUnit.
+
+RedisSerializer<?>	getHashKeySerializer()
+Returns the hashKeySerializer.
+
+RedisSerializer<?>	getHashValueSerializer()
+Returns the hashValueSerializer.
+
+RedisSerializer<?>	getKeySerializer()
+Returns the key serializer used by this template.
+
+RedisSerializer<String>	getStringSerializer()
+Returns the stringSerializer.
+
+RedisSerializer<?>	getValueSerializer()
+Returns the value serializer used by this template.
+
+Boolean	hasKey(K key)
+Determine if given key exists.
+
+boolean	isEnableDefaultSerializer()
+
+boolean	isExposeConnection()
+Returns whether to expose the native Redis connection to RedisCallback code, or rather a connection proxy (the default).
+
+Set<K>	keys(K pattern)
+Find all keys matching the given pattern.
+
+void	killClient(String host, int port)
+Closes a given client connection identified by ip:port given in client.
+
+Boolean	move(K key, int dbIndex)
+Move given key to database with index.
+
+void	multi()
+Mark the start of a transaction block.
+
+ClusterOperations<K,V>	opsForCluster()
+Returns the cluster specific operations interface.
+
+GeoOperations<K,V>	opsForGeo()
+Returns geospatial specific operations interface.
+
+<HK,HV> HashOperations<K,HK,HV>	opsForHash()
+Returns the operations performed on hash values.
+
+HyperLogLogOperations<K,V>	opsForHyperLogLog()
+
+ListOperations<K,V>	opsForList()
+Returns the operations performed on list values.
+
+SetOperations<K,V>	opsForSet()
+Returns the operations performed on set values.
+
+<HK,HV> StreamOperations<K,HK,HV>	opsForStream()
+Returns the operations performed on Streams.
+
+<HK,HV> StreamOperations<K,HK,HV>	opsForStream(HashMapper<? super K,? super HK,? super HV> hashMapper)
+Returns the operations performed on Streams.
+
+ValueOperations<K,V>	opsForValue()
+Returns the operations performed on simple values (or Strings in Redis terminology).
+
+ZSetOperations<K,V>	opsForZSet()
+Returns the operations performed on zset values (also known as sorted sets).
+
+Boolean	persist(K key)
+Remove the expiration from given key.
+
+protected <T> T	postProcessResult(T result, RedisConnection conn, boolean existingConnection)
+
+protected RedisConnection	preProcessConnection(RedisConnection connection, boolean existingConnection)
+
+Processes the connection (before any settings are executed on it).
+
+K	randomKey()
+Return a random key from the keyspace.
+
+void	rename(K oldKey, K newKey)
+Rename key oldKey to newKey.
+
+Boolean	renameIfAbsent(K oldKey, K newKey)
+Rename key oleName to newKey only if newKey does not exist.
+
+void	restore(K key, byte[] value, long timeToLive, TimeUnit unit, boolean replace)
+Executes the Redis restore command.
+
+void	setBeanClassLoader(ClassLoader classLoader)
+Set the ClassLoader to be used for the default JdkSerializationRedisSerializer in case no other RedisSerializer is explicitly set as the default one.
+
+void	setDefaultSerializer(RedisSerializer<?> serializer)
+Sets the default serializer to use for this template.
+
+void	setEnableDefaultSerializer(boolean enableDefaultSerializer)
+
+void	setEnableTransactionSupport(boolean enableTransactionSupport)
+If set to true RedisTemplate will use MULTI...EXEC|DISCARD to keep track of operations.
+
+void	setExposeConnection(boolean exposeConnection)
+Sets whether to expose the Redis connection to RedisCallback code.
+
+void	setHashKeySerializer(RedisSerializer<?> hashKeySerializer)
+Sets the hash key (or field) serializer to be used by this template.
+
+void	setHashValueSerializer(RedisSerializer<?> hashValueSerializer)
+Sets the hash value serializer to be used by this template.
+
+void	setKeySerializer(RedisSerializer<?> serializer)
+Sets the key serializer to be used by this template.
+
+void	setScriptExecutor(ScriptExecutor<K> scriptExecutor)
+
+void	setStringSerializer(RedisSerializer<String> stringSerializer)
+Sets the string value serializer to be used by this template (when the arguments or return types are always strings).
+
+void	setValueSerializer(RedisSerializer<?> serializer)
+Sets the value serializer to be used by this template.
+
+void	slaveOf(String host, int port)
+Change redis replication setting to new master.
+
+void	slaveOfNoOne()
+Change server into master.
+
+List<V>	sort(SortQuery<K> query)
+Sort the elements for query.
+
+<T,S> List<T>	sort(SortQuery<K> query, BulkMapper<T,S> bulkMapper, RedisSerializer<S> resultSerializer)
+Sort the elements for query applying BulkMapper and RedisSerializer.
+
+<T> List<T>	sort(SortQuery<K> query, BulkMapper<T,V> bulkMapper)
+Sort the elements for query applying BulkMapper.
+
+Long	sort(SortQuery<K> query, K storeKey)
+Sort the elements for query and store result in storeKey.
+
+<T> List<T>	sort(SortQuery<K> query, RedisSerializer<T> resultSerializer)
+Sort the elements for query applying RedisSerializer.
+
+DataType	type(K key)
+Determine the type stored at key.
+
+Long	unlink(Collection<K> keys)
+Unlink the keys from the keyspace.
+
+Boolean	unlink(K key)
+Unlink the key from the keyspace.
+
+void	unwatch()
+Flushes all the previously RedisOperations.watch(Object) keys.
+
+void	watch(Collection<K> keys)
+Watch given keys for modifications during transaction started with RedisOperations.multi().
+
+void	watch(K key)
+Watch given key for modifications during transaction started with RedisOperations.multi().
+Methods inherited from class org.springframework.data.redis.core.RedisAccessor
+getConnectionFactory, getRequiredConnectionFactory, setConnectionFactory
+Methods inherited from class java.lang.Object
+clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait
+Methods inherited from interface org.springframework.data.redis.core.RedisOperations
+expire, expireAt, restore
+
+Constructor Detail
+
+RedisTemplate
+public RedisTemplate()
+Constructs a new RedisTemplate instance.
+Method Detail
+
+afterPropertiesSet
+public void afterPropertiesSet()
+Specified by:
+afterPropertiesSet in interface InitializingBean
+Overrides:
+afterPropertiesSet in class RedisAccessor
+
+execute
+@Nullable
+public <T> T execute(RedisCallback<T> action)
+Description copied from interface: RedisOperations
+Executes the given action within a Redis connection. Application exceptions thrown by the action object
+get propagated to the caller (can only be unchecked) whenever possible. Redis exceptions are transformed
+into appropriate DAO ones. Allows for returning a result object, that is a domain object or a collection of domain objects.
+Performs automatic serialization/deserialization for the given objects to and from binary data suitable for the Redis storage.
+Note: Callback code is not supposed to handle transactions itself! Use an appropriate transaction manager.
+Generally, callback code must not touch any Connection lifecycle methods, like close, to let the template do its work.
+Specified by:
+    execute in interface RedisOperations<K,V>
+Type Parameters:
+    T - return type
+Parameters:
+    action - callback object that specifies the Redis action. Must not be null.
+Returns:
+    a result object returned by the action or null
+
+execute
+@Nullable
+public <T> T execute(RedisCallback<T> action,
+                               boolean exposeConnection)
+Executes the given action object within a connection, which can be exposed or not.
+Type Parameters:
+    T - return type
+Parameters:
+    action - callback object that specifies the Redis action
+    exposeConnection - whether to enforce exposure of the native Redis Connection to callback code
+Returns:
+    object returned by the action
+
+execute
+@Nullable
+public <T> T execute(RedisCallback<T> action,
+                               boolean exposeConnection,
+                               boolean pipeline)
+Executes the given action object within a connection that can be exposed or not. Additionally,
+the connection can be pipelined. Note the results of the pipeline are discarded (making it suitable for write-only scenarios).
+Type Parameters:
+    T - return type
+Parameters:
+    action - callback object to execute
+    exposeConnection - whether to enforce exposure of the native Redis Connection to callback code
+    pipeline - whether to pipeline or not the connection for the execution
+Returns:
+    object returned by the action
+
+execute
+public <T> T execute(SessionCallback<T> session)
+Description copied from interface: RedisOperations
+Executes a Redis session. Allows multiple operations to be executed in the same session enabling 'transactional' capabilities
+through RedisOperations.multi() and RedisOperations.watch(Collection) operations.
+Specified by:
+    execute in interface RedisOperations<K,V>
+Type Parameters:
+    T - return type
+Parameters:
+    session - session callback. Must not be null.
+Returns:
+    result object returned by the action or null
+
+executePipelined
+public List<Object> executePipelined(SessionCallback<?> session)
+Description copied from interface: RedisOperations
+Executes the given Redis session on a pipelined connection.
+Allows transactions to be pipelined. Note that the callback cannot return a non-null value as it gets overwritten by the pipeline.
+Specified by:
+    executePipelined in interface RedisOperations<K,V>
+Parameters:
+    session - Session callback
+Returns:
+    list of objects returned by the pipeline
+
+executePipelined
+public List<Object> executePipelined(SessionCallback<?> session,
+                                     @Nullable
+                                     RedisSerializer<?> resultSerializer)
+Description copied from interface: RedisOperations
+Executes the given Redis session on a pipelined connection, returning the results using a dedicated serializer. Allows transactions to be pipelined. Note that the callback cannot return a non-null value as it gets overwritten by the pipeline.
+Specified by:
+executePipelined in interface RedisOperations<K,V>
+Parameters:
+    session - Session callback
+Returns:
+    list of objects returned by the pipeline
+
+executePipelined
+public List<Object> executePipelined(RedisCallback<?> action)
+Description copied from interface: RedisOperations
+Executes the given action object on a pipelined connection, returning the results.
+Note that the callback cannot return a non-null value as it gets overwritten by the pipeline.
+This method will use the default serializers to deserialize results
+Specified by:
+    executePipelined in interface RedisOperations<K,V>
+Parameters:
+    action - callback object to execute
+Returns:
+    list of objects returned by the pipeline
+
+executePipelined
+public List<Object> executePipelined(RedisCallback<?> action,
+                                     @Nullable
+                                     RedisSerializer<?> resultSerializer)
+Description copied from interface: RedisOperations
+Executes the given action object on a pipelined connection, returning the results using a dedicated serializer.
+Note that the callback cannot return a non-null value as it gets overwritten by the pipeline.
+Specified by:
+    executePipelined in interface RedisOperations<K,V>
+Parameters:
+    action - callback object to execute
+    resultSerializer - The Serializer to use for individual values or Collections of values. If any returned values are hashes,
+    this serializer will be used to deserialize both the key and value
+Returns:
+    list of objects returned by the pipeline
+
+execute
+public <T> T execute(RedisScript<T> script,
+                     List<K> keys,
+                     Object... args)
+Description copied from interface: RedisOperations
+Executes the given RedisScript
+Specified by:
+    execute in interface RedisOperations<K,V>
+Parameters:
+    script - The script to execute
+    keys - Any keys that need to be passed to the script
+    args - Any args that need to be passed to the script
+Returns:
+    The return value of the script or null if RedisScript.getResultType() is null, likely indicating a throw-away status reply (i.e. "OK")
+
+execute
+public <T> T execute(RedisScript<T> script,
+                     RedisSerializer<?> argsSerializer,
+                     RedisSerializer<T> resultSerializer,
+                     List<K> keys,
+                     Object... args)
+Description copied from interface: RedisOperations
+Executes the given RedisScript, using the provided RedisSerializers to serialize the script arguments and result.
+Specified by:
+execute in interface RedisOperations<K,V>
+Parameters:
+    script - The script to execute
+    argsSerializer - The RedisSerializer to use for serializing args
+    resultSerializer - The RedisSerializer to use for serializing the script return value
+    keys - Any keys that need to be passed to the script
+    args - Any args that need to be passed to the script
+Returns:
+    The return value of the script or null if RedisScript.getResultType() is null, likely indicating a throw-away status reply (i.e. "OK")
+
+executeWithStickyConnection
+public <T extends Closeable> T executeWithStickyConnection(RedisCallback<T> callback)
+Description copied from interface: RedisOperations
+Allocates and binds a new RedisConnection to the actual return type of the method. It is up to the caller to free resources after use.
+Specified by:
+    executeWithStickyConnection in interface RedisOperations<K,V>
+Parameters:
+callback - must not be null.
+Returns:
+    createRedisConnectionProxy
+    protected RedisConnection createRedisConnectionProxy(RedisConnection pm)
+
+preProcessConnection
+protected RedisConnection preProcessConnection(RedisConnection connection,
+                                               boolean existingConnection)
+Processes the connection (before any settings are executed on it). Default implementation returns the connection as is.
+Parameters:
+    connection - redis connection
+    postProcessResult
+
+@Nullable
+protected <T> T postProcessResult(@Nullable
+                                            T result,
+                                            RedisConnection conn,
+                                            boolean existingConnection)
+isExposeConnection
+public boolean isExposeConnection()
+Returns whether to expose the native Redis connection to RedisCallback code, or rather a connection proxy (the default).
+Returns:
+    whether to expose the native Redis connection or not
+
+setExposeConnection
+public void setExposeConnection(boolean exposeConnection)
+Sets whether to expose the Redis connection to RedisCallback code. Default is "false": a proxy will be returned, suppressing quit and disconnect calls.
+Parameters:
+    exposeConnection -
+
+isEnableDefaultSerializer
+public boolean isEnableDefaultSerializer()
+Returns:
+    Whether or not the default serializer should be used. If not, any serializers not explicitly set will remain null and values will not be serialized or deserialized.
+
+setEnableDefaultSerializer
+public void setEnableDefaultSerializer(boolean enableDefaultSerializer)
+Parameters:
+    enableDefaultSerializer - Whether or not the default serializer should be used.
+    If not, any serializers not explicitly set will remain null and values will not be serialized or deserialized.
+
+getDefaultSerializer
+@Nullable
+public RedisSerializer<?> getDefaultSerializer()
+Returns the default serializer used by this template.
+Returns:
+    template default serializer
+
+setDefaultSerializer
+public void setDefaultSerializer(RedisSerializer<?> serializer)
+Sets the default serializer to use for this template.
+All serializers (except the setStringSerializer(RedisSerializer)) are initialized
+to this value unless explicitly set. Defaults to JdkSerializationRedisSerializer.
+Parameters:
+    serializer - default serializer to use
+
+setKeySerializer
+public void setKeySerializer(RedisSerializer<?> serializer)
+Sets the key serializer to be used by this template. Defaults to getDefaultSerializer().
+Parameters:
+    serializer - the key serializer to be used by this template.
+
+getKeySerializer
+public RedisSerializer<?> getKeySerializer()
+Returns the key serializer used by this template.
+
+Specified by:
+getKeySerializer in interface RedisOperations<K,V>
+Returns:
+    the key serializer used by this template.
+
+setValueSerializer
+public void setValueSerializer(RedisSerializer<?> serializer)
+Sets the value serializer to be used by this template. Defaults to getDefaultSerializer().
+Parameters:
+    serializer - the value serializer to be used by this template.
+
+getValueSerializer
+public RedisSerializer<?> getValueSerializer()
+    Returns the value serializer used by this template.
+Specified by:
+    getValueSerializer in interface RedisOperations<K,V>
+Returns:
+    the value serializer used by this template.
+
+getHashKeySerializer
+public RedisSerializer<?> getHashKeySerializer()
+Returns the hashKeySerializer.
+Specified by:
+getHashKeySerializer in interface RedisOperations<K,V>
+Returns:
+Returns the hashKeySerializer
+setHashKeySerializer
+public void setHashKeySerializer(RedisSerializer<?> hashKeySerializer)
+Sets the hash key (or field) serializer to be used by this template. Defaults to getDefaultSerializer().
+Parameters:
+hashKeySerializer - The hashKeySerializer to set.
+getHashValueSerializer
+public RedisSerializer<?> getHashValueSerializer()
+Returns the hashValueSerializer.
+Specified by:
+getHashValueSerializer in interface RedisOperations<K,V>
+Returns:
+Returns the hashValueSerializer
+setHashValueSerializer
+public void setHashValueSerializer(RedisSerializer<?> hashValueSerializer)
+Sets the hash value serializer to be used by this template. Defaults to getDefaultSerializer().
+Parameters:
+hashValueSerializer - The hashValueSerializer to set.
+getStringSerializer
+public RedisSerializer<String> getStringSerializer()
+Returns the stringSerializer.
+Returns:
+Returns the stringSerializer
+setStringSerializer
+public void setStringSerializer(RedisSerializer<String> stringSerializer)
+Sets the string value serializer to be used by this template (when the arguments or return types are always strings). Defaults to StringRedisSerializer.
+Parameters:
+stringSerializer - The stringValueSerializer to set.
+See Also:
+ValueOperations.get(Object, long, long)
+setScriptExecutor
+public void setScriptExecutor(ScriptExecutor<K> scriptExecutor)
+Parameters:
+scriptExecutor - The ScriptExecutor to use for executing Redis scripts
+exec
+public List<Object> exec()
+Execute a transaction, using the default RedisSerializers to deserialize any results that are byte[]s or Collections or Maps of byte[]s or Tuples. Other result types (Long, Boolean, etc) are left as-is in the converted results. If conversion of tx results has been disabled in the RedisConnectionFactory, the results of exec will be returned without deserialization. This check is mostly for backwards compatibility with 1.0.
+Specified by:
+exec in interface RedisOperations<K,V>
+Returns:
+The (possibly deserialized) results of transaction exec
+See Also:
+Redis Documentation: EXEC
+exec
+public List<Object> exec(RedisSerializer<?> valueSerializer)
+Description copied from interface: RedisOperations
+Execute a transaction, using the provided RedisSerializer to deserialize any results that are byte[]s or Collections of byte[]s. If a result is a Map, the provided RedisSerializer will be used for both the keys and values. Other result types (Long, Boolean, etc) are left as-is in the converted results. Tuple results are automatically converted to TypedTuples.
+Specified by:
+exec in interface RedisOperations<K,V>
+Parameters:
+valueSerializer - The RedisSerializer to use for deserializing the results of transaction exec
+Returns:
+The deserialized results of transaction exec
+execRaw
+protected List<Object> execRaw()
+delete
+public Boolean delete(K key)
+Description copied from interface: RedisOperations
+Delete given key.
+Specified by:
+delete in interface RedisOperations<K,V>
+Parameters:
+key - must not be null.
+Returns:
+true if the key was removed.
+See Also:
+Redis Documentation: DEL
+delete
+public Long delete(Collection<K> keys)
+Description copied from interface: RedisOperations
+Delete given keys.
+Specified by:
+delete in interface RedisOperations<K,V>
+Parameters:
+keys - must not be null.
+Returns:
+The number of keys that were removed. null when used in pipeline / transaction.
+See Also:
+Redis Documentation: DEL
+unlink
+public Boolean unlink(K key)
+Description copied from interface: RedisOperations
+Unlink the key from the keyspace. Unlike with RedisOperations.delete(Object) the actual memory reclaiming here happens asynchronously.
+Specified by:
+unlink in interface RedisOperations<K,V>
+Parameters:
+key - must not be null.
+Returns:
+The number of keys that were removed. null when used in pipeline / transaction.
+See Also:
+Redis Documentation: UNLINK
+unlink
+public Long unlink(Collection<K> keys)
+Description copied from interface: RedisOperations
+Unlink the keys from the keyspace. Unlike with RedisOperations.delete(Collection) the actual memory reclaiming here happens asynchronously.
+Specified by:
+unlink in interface RedisOperations<K,V>
+Parameters:
+keys - must not be null.
+Returns:
+The number of keys that were removed. null when used in pipeline / transaction.
+See Also:
+Redis Documentation: UNLINK
+hasKey
+public Boolean hasKey(K key)
+Description copied from interface: RedisOperations
+Determine if given key exists.
+Specified by:
+hasKey in interface RedisOperations<K,V>
+Parameters:
+key - must not be null.
+Returns:
+See Also:
+Redis Documentation: EXISTS
+countExistingKeys
+public Long countExistingKeys(Collection<K> keys)
+Description copied from interface: RedisOperations
+Count the number of keys that exist.
+Specified by:
+countExistingKeys in interface RedisOperations<K,V>
+Parameters:
+keys - must not be null.
+Returns:
+The number of keys existing among the ones specified as arguments. Keys mentioned multiple times and existing are counted multiple times.
+See Also:
+Redis Documentation: EXISTS
+expire
+public Boolean expire(K key,
+                      long timeout,
+                      TimeUnit unit)
+Description copied from interface: RedisOperations
+Set time to live for given key.
+Specified by:
+expire in interface RedisOperations<K,V>
+Parameters:
+key - must not be null.
+unit - must not be null.
+Returns:
+null when used in pipeline / transaction.
+expireAt
+public Boolean expireAt(K key,
+                        Date date)
+Description copied from interface: RedisOperations
+Set the expiration for given key as a date timestamp.
+Specified by:
+expireAt in interface RedisOperations<K,V>
+Parameters:
+key - must not be null.
+date - must not be null.
+Returns:
+null when used in pipeline / transaction.
+convertAndSend
+public void convertAndSend(String channel,
+                           Object message)
+Description copied from interface: RedisOperations
+Publishes the given message to the given channel.
+Specified by:
+convertAndSend in interface RedisOperations<K,V>
+Parameters:
+channel - the channel to publish to, must not be null.
+message - message to publish
+See Also:
+Redis Documentation: PUBLISH
+getExpire
+public Long getExpire(K key)
+Description copied from interface: RedisOperations
+Get the time to live for key in seconds.
+Specified by:
+getExpire in interface RedisOperations<K,V>
+Parameters:
+key - must not be null.
+Returns:
+null when used in pipeline / transaction.
+See Also:
+Redis Documentation: TTL
+getExpire
+public Long getExpire(K key,
+                      TimeUnit timeUnit)
+Description copied from interface: RedisOperations
+Get the time to live for key in and convert it to the given TimeUnit.
+Specified by:
+getExpire in interface RedisOperations<K,V>
+Parameters:
+key - must not be null.
+timeUnit - must not be null.
+Returns:
+null when used in pipeline / transaction.
+keys
+public Set<K> keys(K pattern)
+Description copied from interface: RedisOperations
+Find all keys matching the given pattern.
+Specified by:
+keys in interface RedisOperations<K,V>
+Parameters:
+pattern - must not be null.
+Returns:
+null when used in pipeline / transaction.
+See Also:
+Redis Documentation: KEYS
+persist
+public Boolean persist(K key)
+Description copied from interface: RedisOperations
+Remove the expiration from given key.
+Specified by:
+persist in interface RedisOperations<K,V>
+Parameters:
+key - must not be null.
+Returns:
+null when used in pipeline / transaction.
+See Also:
+Redis Documentation: PERSIST
+move
+public Boolean move(K key,
+                    int dbIndex)
+Description copied from interface: RedisOperations
+Move given key to database with index.
+Specified by:
+move in interface RedisOperations<K,V>
+Parameters:
+key - must not be null.
+Returns:
+null when used in pipeline / transaction.
+See Also:
+Redis Documentation: MOVE
+randomKey
+public K randomKey()
+Description copied from interface: RedisOperations
+Return a random key from the keyspace.
+Specified by:
+randomKey in interface RedisOperations<K,V>
+Returns:
+null no keys exist or when used in pipeline / transaction.
+See Also:
+Redis Documentation: RANDOMKEY
+rename
+public void rename(K oldKey,
+                   K newKey)
+Description copied from interface: RedisOperations
+Rename key oldKey to newKey.
+Specified by:
+rename in interface RedisOperations<K,V>
+Parameters:
+oldKey - must not be null.
+newKey - must not be null.
+See Also:
+Redis Documentation: RENAME
+renameIfAbsent
+public Boolean renameIfAbsent(K oldKey,
+                              K newKey)
+Description copied from interface: RedisOperations
+Rename key oleName to newKey only if newKey does not exist.
+Specified by:
+renameIfAbsent in interface RedisOperations<K,V>
+Parameters:
+oldKey - must not be null.
+newKey - must not be null.
+Returns:
+null when used in pipeline / transaction.
+See Also:
+Redis Documentation: RENAMENX
+type
+public DataType type(K key)
+Description copied from interface: RedisOperations
+Determine the type stored at key.
+Specified by:
+type in interface RedisOperations<K,V>
+Parameters:
+key - must not be null.
+Returns:
+null when used in pipeline / transaction.
+See Also:
+Redis Documentation: TYPE
+dump
+public byte[] dump(K key)
+Executes the Redis dump command and returns the results.
+Redis uses a non-standard serialization mechanism and includes checksum information,
+thus the raw bytes are returned as opposed to deserializing with valueSerializer.
+Use the return value of dump as the value argument to restore
+Specified by:
+dump in interface RedisOperations<K,V>
+Parameters:
+key - The key to dump
+Returns:
+results The results of the dump operation
+See Also:
+Redis Documentation: DUMP
+
+restore
+public void restore(K key,
+                    byte[] value,
+                    long timeToLive,
+                    TimeUnit unit,
+                    boolean replace)
+Executes the Redis restore command. The value passed in should be the exact serialized data
+returned from dump(Object), since Redis uses a non-standard serialization mechanism.
+Specified by:
+    restore in interface RedisOperations<K,V>
+Parameters:
+    key - The key to restore
+    value - The value to restore, as returned by dump(Object)
+    timeToLive - An expiration for the restored key, or 0 for no expiration
+    unit - The time unit for timeToLive
+    replace - use true to replace a potentially existing value instead of erroring.
+    Throws:
+    RedisSystemException - if the key you are attempting to restore already exists and replace is set to false.
+See Also:
+Redis Documentation: RESTORE
+
+multi
+public void multi()
+    Description copied from interface: RedisOperations
+Mark the start of a transaction block.
+Commands will be queued and can then be executed by calling RedisOperations.exec() or rolled back using RedisOperations.discard()
+Specified by:
+    multi in interface RedisOperations<K,V>
+See Also:
+    Redis Documentation: MULTI
+
+discard
+public void discard()
+    Description copied from interface: RedisOperations
+Discard all commands issued after RedisOperations.multi().
+Specified by:
+    discard in interface RedisOperations<K,V>
+See Also:
+    Redis Documentation: DISCARD
+
+watch
+public void watch(K key)
+Description copied from interface: RedisOperations
+Watch given key for modifications during transaction started with RedisOperations.multi().
+Specified by:
+watch in interface RedisOperations<K,V>
+Parameters:
+    key - must not be null.
+See Also:
+    Redis Documentation: WATCH
+
+watch
+public void watch(Collection<K> keys)
+Description copied from interface: RedisOperations
+Watch given keys for modifications during transaction started with RedisOperations.multi().
+Specified by:
+watch in interface RedisOperations<K,V>
+Parameters:
+    keys - must not be null.
+See Also:
+Redis Documentation: WATCH
+
+unwatch
+public void unwatch()
+Description copied from interface: RedisOperations
+Flushes all the previously RedisOperations.watch(Object) keys.
+Specified by:
+unwatch in interface RedisOperations<K,V>
+See Also:
+Redis Documentation: UNWATCH
+
+sort
+public List<V> sort(SortQuery<K> query)
+Description copied from interface: RedisOperations
+Sort the elements for query.
+Specified by:
+sort in interface RedisOperations<K,V>
+Parameters:
+    query - must not be null.
+Returns:
+    the results of sort. null when used in pipeline / transaction.
+See Also:
+Redis Documentation: SORT
+
+sort
+public <T> List<T> sort(SortQuery<K> query,
+                        @Nullable
+                        RedisSerializer<T> resultSerializer)
+Description copied from interface: RedisOperations
+Sort the elements for query applying RedisSerializer.
+Specified by:
+sort in interface RedisOperations<K,V>
+Parameters:
+query - must not be null.
+Returns:
+the deserialized results of sort. null when used in pipeline / transaction.
+See Also:
+Redis Documentation: SORT
+sort
+public <T> List<T> sort(SortQuery<K> query,
+                        BulkMapper<T,V> bulkMapper)
+Description copied from interface: RedisOperations
+Sort the elements for query applying BulkMapper.
+Specified by:
+sort in interface RedisOperations<K,V>
+Parameters:
+query - must not be null.
+Returns:
+the deserialized results of sort. null when used in pipeline / transaction.
+See Also:
+Redis Documentation: SORT
+sort
+public <T,S> List<T> sort(SortQuery<K> query,
+                          BulkMapper<T,S> bulkMapper,
+                          @Nullable
+                          RedisSerializer<S> resultSerializer)
+Description copied from interface: RedisOperations
+Sort the elements for query applying BulkMapper and RedisSerializer.
+Specified by:
+sort in interface RedisOperations<K,V>
+Parameters:
+query - must not be null.
+Returns:
+the deserialized results of sort. null when used in pipeline / transaction.
+See Also:
+Redis Documentation: SORT
+sort
+public Long sort(SortQuery<K> query,
+                 K storeKey)
+Description copied from interface: RedisOperations
+Sort the elements for query and store result in storeKey.
+Specified by:
+sort in interface RedisOperations<K,V>
+Parameters:
+query - must not be null.
+storeKey - must not be null.
+Returns:
+number of values. null when used in pipeline / transaction.
+See Also:
+Redis Documentation: SORT
+killClient
+public void killClient(String host,
+                       int port)
+Description copied from interface: RedisOperations
+Closes a given client connection identified by ip:port given in client.
+Specified by:
+killClient in interface RedisOperations<K,V>
+Parameters:
+host - of connection to close.
+port - of connection to close
+getClientList
+public List<RedisClientInfo> getClientList()
+Description copied from interface: RedisOperations
+Request information and statistics about connected clients.
+Specified by:
+getClientList in interface RedisOperations<K,V>
+Returns:
+List of RedisClientInfo objects.
+slaveOf
+public void slaveOf(String host,
+                    int port)
+Description copied from interface: RedisOperations
+Change redis replication setting to new master.
+Specified by:
+slaveOf in interface RedisOperations<K,V>
+Parameters:
+host - must not be null.
+See Also:
+Redis Documentation: SLAVEOF
+slaveOfNoOne
+public void slaveOfNoOne()
+Description copied from interface: RedisOperations
+Change server into master.
+Specified by:
+slaveOfNoOne in interface RedisOperations<K,V>
+See Also:
+Redis Documentation: SLAVEOF
+opsForCluster
+public ClusterOperations<K,V> opsForCluster()
+Description copied from interface: RedisOperations
+Returns the cluster specific operations interface.
+Specified by:
+opsForCluster in interface RedisOperations<K,V>
+Returns:
+never null.
+opsForGeo
+public GeoOperations<K,V> opsForGeo()
+Description copied from interface: RedisOperations
+Returns geospatial specific operations interface.
+Specified by:
+opsForGeo in interface RedisOperations<K,V>
+Returns:
+never null.
+boundGeoOps
+public BoundGeoOperations<K,V> boundGeoOps(K key)
+Description copied from interface: RedisOperations
+Returns geospatial specific operations interface bound to the given key.
+Specified by:
+boundGeoOps in interface RedisOperations<K,V>
+Parameters:
+key - must not be null.
+Returns:
+never null.
+boundHashOps
+public <HK,HV> BoundHashOperations<K,HK,HV> boundHashOps(K key)
+Description copied from interface: RedisOperations
+Returns the operations performed on hash values bound to the given key. * @param hash key (or field) type
+Specified by:
+boundHashOps in interface RedisOperations<K,V>
+HV - hash value type
+Parameters:
+key - Redis key
+Returns:
+hash operations bound to the given key.
+opsForHash
+public <HK,HV> HashOperations<K,HK,HV> opsForHash()
+Description copied from interface: RedisOperations
+Returns the operations performed on hash values.
+Specified by:
+opsForHash in interface RedisOperations<K,V>
+Type Parameters:
+HK - hash key (or field) type
+HV - hash value type
+Returns:
+hash operations
+opsForHyperLogLog
+public HyperLogLogOperations<K,V> opsForHyperLogLog()
+Specified by:
+opsForHyperLogLog in interface RedisOperations<K,V>
+Returns:
+opsForList
+public ListOperations<K,V> opsForList()
+Description copied from interface: RedisOperations
+Returns the operations performed on list values.
+Specified by:
+opsForList in interface RedisOperations<K,V>
+Returns:
+list operations
+boundListOps
+public BoundListOperations<K,V> boundListOps(K key)
+Description copied from interface: RedisOperations
+Returns the operations performed on list values bound to the given key.
+Specified by:
+boundListOps in interface RedisOperations<K,V>
+Parameters:
+key - Redis key
+Returns:
+list operations bound to the given key
+boundSetOps
+public BoundSetOperations<K,V> boundSetOps(K key)
+Description copied from interface: RedisOperations
+Returns the operations performed on set values bound to the given key.
+Specified by:
+boundSetOps in interface RedisOperations<K,V>
+Parameters:
+key - Redis key
+Returns:
+set operations bound to the given key
+opsForSet
+public SetOperations<K,V> opsForSet()
+Description copied from interface: RedisOperations
+Returns the operations performed on set values.
+Specified by:
+opsForSet in interface RedisOperations<K,V>
+Returns:
+set operations
+opsForStream
+public <HK,HV> StreamOperations<K,HK,HV> opsForStream()
+Description copied from interface: RedisOperations
+Returns the operations performed on Streams.
+Specified by:
+opsForStream in interface RedisOperations<K,V>
+Returns:
+stream operations.
+opsForStream
+public <HK,HV> StreamOperations<K,HK,HV> opsForStream(HashMapper<? super K,? super HK,? super HV> hashMapper)
+Description copied from interface: RedisOperations
+Returns the operations performed on Streams.
+Specified by:
+opsForStream in interface RedisOperations<K,V>
+Parameters:
+hashMapper - the HashMapper to use when converting ObjectRecord.
+Returns:
+stream operations.
+boundStreamOps
+public <HK,HV> BoundStreamOperations<K,HK,HV> boundStreamOps(K key)
+Description copied from interface: RedisOperations
+Returns the operations performed on Streams bound to the given key.
+Specified by:
+boundStreamOps in interface RedisOperations<K,V>
+Returns:
+stream operations.
+boundValueOps
+public BoundValueOperations<K,V> boundValueOps(K key)
+Description copied from interface: RedisOperations
+Returns the operations performed on simple values (or Strings in Redis terminology) bound to the given key.
+Specified by:
+boundValueOps in interface RedisOperations<K,V>
+Parameters:
+key - Redis key
+Returns:
+value operations bound to the given key
+opsForValue
+public ValueOperations<K,V> opsForValue()
+Description copied from interface: RedisOperations
+Returns the operations performed on simple values (or Strings in Redis terminology).
+Specified by:
+opsForValue in interface RedisOperations<K,V>
+Returns:
+value operations
+boundZSetOps
+public BoundZSetOperations<K,V> boundZSetOps(K key)
+Description copied from interface: RedisOperations
+Returns the operations performed on zset values (also known as sorted sets) bound to the given key.
+Specified by:
+boundZSetOps in interface RedisOperations<K,V>
+Parameters:
+key - Redis key
+Returns:
+zset operations bound to the given key.
+opsForZSet
+public ZSetOperations<K,V> opsForZSet()
+Description copied from interface: RedisOperations
+Returns the operations performed on zset values (also known as sorted sets).
+Specified by:
+opsForZSet in interface RedisOperations<K,V>
+Returns:
+zset operations
+setEnableTransactionSupport
+public void setEnableTransactionSupport(boolean enableTransactionSupport)
+If set to true RedisTemplate will use MULTI...EXEC|DISCARD to keep track of operations.
+Parameters:
+enableTransactionSupport -
+Since:
+1.3
+setBeanClassLoader
+public void setBeanClassLoader(ClassLoader classLoader)
+Set the ClassLoader to be used for the default JdkSerializationRedisSerializer in case no other RedisSerializer is explicitly set as the default one.
+Specified by:
+setBeanClassLoader in interface BeanClassLoaderAware
+Parameters:
+classLoader - can be null.
+Since:
+1.8
+See Also:
+BeanClassLoaderAware.setBeanClassLoader(java.lang.ClassLoader)
