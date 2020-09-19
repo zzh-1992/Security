@@ -1,6 +1,8 @@
 @author Grapefruit
 @Date 2020/09/19
 
+属性配置、日志配置
+
 SpringBoot操作方法指南
 https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html
 
