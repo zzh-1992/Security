@@ -31,5 +31,5 @@ public class Constant {
 
     public static final String RSA = "RSA";
 
-    public static final int KEY_SIZE = 1024;
+    public static final int KEY_SIZE = 2048; //
 }

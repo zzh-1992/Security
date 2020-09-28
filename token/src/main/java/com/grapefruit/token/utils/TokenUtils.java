@@ -4,7 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.RSAKeyProvider;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +27,7 @@ import java.util.UUID;
 public class TokenUtils {
 
     //过期时间
-    public static final long EXPIRE_Time = 30 * 60 * 1000;
+    //public static final long EXPIRE_Time = 30 * 60 * 1000;
     //public static final long EXPIRE_Time = 3000;
 
     //token密钥
@@ -39,13 +45,16 @@ public class TokenUtils {
     }
 
     /**
-     * 生成token
+     * 生成token(HMAC256)
      *
+     * @param userName 用户名
+     * @param password 密码
+     * @param expireTime token过期时间
      * @return token字符串
      */
-    public static String generateToken() {
+    public static String generateTokenWithHMAC256(String userName,String password,Long expireTime) {
         //设置过期时间
-        Date date = new Date(System.currentTimeMillis() + EXPIRE_Time);
+        Date date = new Date(System.currentTimeMillis() + expireTime);
 
         //设置算法
         Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
@@ -58,8 +67,8 @@ public class TokenUtils {
         //生成token
         String token = JWT.create()
                 .withHeader(header)
-                .withClaim("userName", "Grapefruit")
-                .withClaim("password", "123")
+                .withClaim("userName", userName)
+                .withClaim("password", password)
                 .withExpiresAt(date)
                 .sign(algorithm);
         System.out.println("生成的token:" + token);
@@ -67,13 +76,48 @@ public class TokenUtils {
     }
 
     /**
-     * 校验token
+     * 生成token(HMAC256)
+     *
+     * @param userName 用户名
+     * @param password 密码
+     * @param expireTime token过期时间
+     * @return token字符串
+     */
+    public static String generateTokenWithRSA512(String userName,String password,Long expireTime) throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+        //设置过期时间
+        Date date = new Date(System.currentTimeMillis() + expireTime);
+
+        //获取存有公钥对象、密钥对象的map集合
+        Map<String, Object> keyMap = RSAUtils.getKey();
+
+        //设置算法
+        Algorithm algorithm = Algorithm.RSA512((RSAPublicKey) keyMap.get("publicKey"),(RSAPrivateKey) keyMap.get("privateKey"));
+
+        //设置参数
+        Map<String, Object> header = new HashMap<>(2);
+        header.put("typ", "JWT");
+        header.put("alg", "RSA512");
+
+        //生成token
+        String token = JWT.create()
+                .withHeader(header)
+                .withClaim("userName", userName)
+                .withClaim("password", password)
+                .withExpiresAt(date)
+                .sign(algorithm);
+        System.out.println("生成的token:" + token);
+        return token;
+    }
+
+    /**
+     * 校验token(HMAC256)
      *
      * @param token
      * @return 返回token的校验结果(true token有效,false token 无效)
      */
-    public static boolean checkToken(String token) {
+    public static boolean checkTokenWithHMAC256(String token) {
         try {
+
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
             JWTVerifier verifier = JWT.require(algorithm).build();
             verifier.verify(token);
@@ -84,7 +128,27 @@ public class TokenUtils {
         }
     }
 
-    //解析token中的信息(userName、password)
+    /**
+     * 校验token(RSA512)
+     *
+     * @param token
+     * @return 返回token的校验结果(true token有效,false token 无效)
+     */
+    public static boolean checkTokenWithRSA512(String token) {
+        try {
+            Map<String, Object> keyMap = RSAUtils.getKey();
+
+            //获取存有公钥对象、密钥对象的map集合
+            Algorithm algorithm = Algorithm.RSA512((RSAPublicKey) keyMap.get("publicKey"),(RSAPrivateKey) keyMap.get("privateKey"));
+
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            verifier.verify(token);
+            return true;
+        } catch (Exception e) {
+            //e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * 解析token的原有信息

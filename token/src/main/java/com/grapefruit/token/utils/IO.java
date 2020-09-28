@@ -1,4 +1,4 @@
-package com.grapefruit.rsa.util;
+package com.grapefruit.token.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class IO {
      * @return 公钥字符串
      * @throws IOException
      */
-    public static String readPublicKey() throws IOException {
+    public static String readPublicKeyStr() throws IOException {
 
         FileInputStream fis = new FileInputStream("public");
         int readCount;
@@ -35,7 +35,7 @@ public class IO {
      * @return 密钥字符串
      * @throws IOException
      */
-    public static String readPrivateKey() throws IOException {
+    public static String readPrivateKeyStr() throws IOException {
 
         FileInputStream fis = new FileInputStream("private");
         int readCount;
@@ -47,4 +47,6 @@ public class IO {
         fis.close();
         return publicKeyStr;
     }
+
+
 }

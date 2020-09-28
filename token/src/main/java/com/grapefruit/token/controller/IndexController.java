@@ -7,7 +7,6 @@ package com.grapefruit.token.controller;
  */
 
 import com.grapefruit.token.entity.Stu;
-import com.grapefruit.token.utils.TokenTest;
 import com.grapefruit.token.utils.TokenUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(path = "/grapefruit", method = RequestMethod.GET)
 public class IndexController {
+
+    //过期时间
+    public static final long EXPIRE_Time = 30 * 60 * 1000;
 
     /**
      * url localhost:8080/grapefruit/login
@@ -37,7 +39,7 @@ public class IndexController {
         if (!stu.getPassword().equals("123")) {
             return "密码错误";
         } else {
-            String token = TokenUtils.generateToken();
+            String token = TokenUtils.generateTokenWithHMAC256("ZZZ","2323",EXPIRE_Time);
             return token;
         }
     }
@@ -49,7 +51,7 @@ public class IndexController {
 
         System.out.println("index token:" + headerToken);
 
-        boolean isLogin = TokenUtils.checkToken(headerToken);
+        boolean isLogin = TokenUtils.checkTokenWithHMAC256(headerToken);
 
         if (isLogin) {
             return "会话状态持续";

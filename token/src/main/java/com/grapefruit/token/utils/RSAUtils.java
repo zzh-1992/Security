@@ -1,6 +1,4 @@
-package com.grapefruit.rsa.util;
-
-import com.grapefruit.rsa.constant.Constant;
+package com.grapefruit.token.utils;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -15,7 +13,6 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,10 +26,10 @@ import java.util.Map;
  * @ModifyTime 2020/9/12 19:23:16
  */
 public class RSAUtils {
-
+    
     //网友博客地址:https://www.cnblogs.com/longyao/p/11346984.html
 
-    //生成密钥
+    //使用密钥字符串生成生成密钥对象
     public static PrivateKey  getPrivateKey(String basicPrivateKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
         //生成钥匙工厂
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -49,7 +46,7 @@ public class RSAUtils {
         return privateKey;
     }
 
-    //生成公钥
+    //使用公钥字符串生成生成公钥对象
     public static PublicKey getPublicKey(String basicPublicKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
         //生成钥匙工厂
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -59,11 +56,41 @@ public class RSAUtils {
         byte[] decodedKey = Base64.getDecoder().decode(basicPublicKey);
 
         //公钥编码
-        PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(decodedKey);
+        //PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(decodedKey);
+        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(decodedKey);
 
         //生成公钥
-        PublicKey publicKey = keyFactory.generatePublic(pkcs8EncodedKeySpec);
+        //PublicKey publicKey = keyFactory.generatePublic(pkcs8EncodedKeySpec);  X509EncodedKeySpec
+        PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
         return publicKey;
+    }
+
+    /**
+     * 从系统路径获取密钥对象,公钥对象的map集合
+     *
+     * @return map
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     * @throws InvalidKeySpecException
+     */
+    public static Map<String,Object> getKey() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+        Map<String,Object> map = new HashMap(2);
+
+        //调用IO工具获取私钥字符串,并生成私钥对象
+        PrivateKey privateKey = getPrivateKey(IO.readPrivateKeyStr());
+
+        /*RSAPrivateKey privateKey = (RSAPrivateKey)KeyFactory.
+                getInstance("RSA").
+                generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(IO.readPrivateKeyStr())));*/
+
+        //调用IO工具获取公钥钥字符串,并生成公钥对象
+        PublicKey publicKey = getPublicKey(IO.readPublicKeyStr());
+        /*RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance("RSA")
+                .generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(IO.readPublicKeyStr())));*/
+
+        map.put("privateKey",privateKey);
+        map.put("publicKey",publicKey);
+        return map;
     }
 
     /**
@@ -75,7 +102,7 @@ public class RSAUtils {
      */
     public static Map<String,String> generateKeyPair() throws NoSuchAlgorithmException, IOException {
         //基于RSA算法生成密钥对
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(Constant.RSA);
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         //初始化密钥对生成器(96-1024)
         //keyPairGenerator.initialize(Constant.KEY_SIZE,new SecureRandom());
         keyPairGenerator.initialize(3072,new SecureRandom());
@@ -134,10 +161,10 @@ public class RSAUtils {
         byte[] decode = Base64.getDecoder().decode(key);
 
         RSAPrivateKey privateKey = (RSAPrivateKey)KeyFactory.
-                getInstance(Constant.RSA).
+                getInstance("RSA").
                 generatePrivate(new PKCS8EncodedKeySpec(decode));
 
-        Cipher cipher = Cipher.getInstance(Constant.RSA);
+        Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE,privateKey);
 
         //解密
@@ -149,7 +176,7 @@ public class RSAUtils {
     }
 
     /**
-     * 文本加密
+     * 加密
      *
      * @param key 公钥
      * @param text 文本
@@ -173,7 +200,7 @@ public class RSAUtils {
                 .generatePublic(new X509EncodedKeySpec(decodes));
 
         //生成密码对象
-        Cipher cipher = Cipher.getInstance(Constant.RSA);
+        Cipher cipher = Cipher.getInstance("RSA");
         //密码对象初始化(加密模式、公钥)
         cipher.init(Cipher.ENCRYPT_MODE,publicKey);
 
@@ -206,7 +233,7 @@ public class RSAUtils {
 
         byte[] keyBytes = privateKey.getEncoded();
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(Constant.RSA);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PrivateKey key = keyFactory.generatePrivate(keySpec);
         //生成签名类对象
         Signature signature = Signature.getInstance("SHA256withRSA"); //SHA256withRSA MD5withRSA
@@ -220,7 +247,7 @@ public class RSAUtils {
     }
 
     /**
-     * 验证签名处理
+     * 验签(验证签名处理)
      *
      * @param srcData 原始文本
      * @param publicKey 公钥
@@ -235,7 +262,7 @@ public class RSAUtils {
 
         byte[] keyBytes = publicKey.getEncoded();
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(Constant.RSA);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
         PublicKey key = keyFactory.generatePublic(keySpec);
         Signature signature = Signature.getInstance("SHA256withRSA");

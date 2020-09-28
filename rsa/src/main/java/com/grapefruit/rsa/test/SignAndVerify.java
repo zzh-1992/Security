@@ -33,13 +33,14 @@ public class SignAndVerify {
         RSAPrivateKey privateKey = (RSAPrivateKey)KeyFactory.
                 getInstance(Constant.RSA).
                 generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyStr)));
-
+        //签名
         String sign = RSAUtils.sign(privateKey, text);
 
         RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance(Constant.RSA)
                 .generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyStr)));
 
         //text = "2020GGG";
+        //验签
         boolean verify = RSAUtils.verify(text, publicKey, sign);
         System.out.println("verify:" + verify);
     }
