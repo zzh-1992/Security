@@ -53,11 +53,10 @@ public class IndexController {
             valueOperations.set(StringUtils.strReplace(token),token,30, TimeUnit.MINUTES);
 
             //把token写入cookie
-            Cookie cookie = new Cookie("myToken",token);
+            /*Cookie cookie = new Cookie("myToken",token);
             cookie.setMaxAge(30 * 60);
             cookie.setSecure(true);
-
-            response.addCookie(cookie);
+            response.addCookie(cookie);*/
 
             return "登陆成功";
         } else {

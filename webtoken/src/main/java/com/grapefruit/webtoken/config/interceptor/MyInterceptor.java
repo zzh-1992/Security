@@ -28,7 +28,7 @@ public class MyInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //1 从cookie获取tooken
-        Cookie[] cookies = request.getCookies();
+        /*Cookie[] cookies = request.getCookies();
         if(cookies == null){
             return false;
         }
@@ -45,7 +45,7 @@ public class MyInterceptor implements HandlerInterceptor {
                 }
 
             }
-        }
+        }*/
 
 
         //2 从请求头获取token
