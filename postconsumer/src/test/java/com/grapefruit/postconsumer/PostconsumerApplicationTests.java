@@ -29,8 +29,8 @@ class PostconsumerApplicationTests {
 
 		//参数封装
 		HashMap<String, Object> map = new HashMap<>();
-		map.put("userName","ghghg");
-		map.put("id",90);
+		map.put("userName","ZhangZhihuang");
+		map.put("id",2020);
 
 		HttpEntity<Map<String, Object>> objectHttpEntity = new HttpEntity<>(map,httpHeaders);
 
