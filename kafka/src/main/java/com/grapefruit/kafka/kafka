@@ -1,0 +1,50 @@
+
+
+
+
+/usr/local/kafka-2.6.0-src/logs
+
+
+
+/usr/local/kafka_2.13-2.6.0/logs
+
+start kafka
+./bin/kafka-server-start.sh -daemon ./config/server.properties
+
+create topic
+./bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic grapefruit
+
+show topics
+./bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+
+create provider
+./bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic grapefruit
+
+create consumer
+./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic grapefruit
+
+
+/usr/local/
+
+/usr/local/kafka_2.13-2.6.0/bin/kafka-server-start.sh -daemon /usr/local/kafka_2.13-2.6.0/config/server.properties
+
+
+kafka.sh
+
+#!/bin/bash
+
+case $1 in
+"start"){
+    for i in k1 k2 k3
+    do
+        echo "------------$i------------"
+        ssh $i "/usr/local/kafka_2.13-2.6.0/bin/kafka-server-start.sh -daemon /usr/local/kafka_2.13-2.6.0/config/server.properties"
+    done
+};;
+"stop"){
+    for i in k1 k2 k3
+    do
+        echo "------------$i------------"
+        ssh $i "/usr/local/kafka_2.13-2.6.0/bin/kafka-server-stop.sh /usr/local/kafka_2.13-2.6.0/config/server.properties"
+    done
+};;
