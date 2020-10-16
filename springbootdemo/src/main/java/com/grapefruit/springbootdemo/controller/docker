@@ -8,3 +8,5 @@ docker run \
 -d docker.io/zookeeper:latest
 
 //docker run -p 2181:2181 --network host -v /usr/zookeeper/data:/data -v /usr/zookeeper/conf/zoo.cfg:/conf/zoo.cfg --name zookeeper -d docker.io/zookeeper
+
+rapefruit
