@@ -41,6 +41,6 @@ https://blog.csdn.net/smile_bestSun/article/details/52790485?utm_medium=distribu
 CREATE TABLE ggg(id int,s_name varchar,PRIMARY KEY(id));
 
 添加数据
-insert into ggg (id,s_name) values (0,'kgf');
-insert into ggg (id,s_name) values (1,'fdfd');
-insert into ggg (id,s_name) values (2,'ssss');
+insert into ggg (id,s_name) values (7,'kgf');
+insert into ggg (id,s_name) values (5,'fdfd');
+insert into ggg (id,s_name) values (6,'ssss');
