@@ -1,0 +1,37 @@
+gude
+https://cassandra.apache.org/doc/latest/getting_started/index.html
+
+/var/data/cassandra/cdc_raw
+
+/var/data/cassandra/commitlog
+
+/var/data/cassandra/data
+
+/var/data/cassandra/hints
+
+/var/data/cassandra/saved_caches
+
+
+wget https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tgz
+
+bin/cqlsh $host $port
+
+export CASSANDRA_HOME=/usr/local/apache-cassandra-3.11.8
+export PATH=$CASSANDRA_HOME/bin:$PATH
+
+yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gcc make
+
+/usr/local/apache-cassandra-3.11.8/bin/cassandra
+
+
+=====================================================================
+./configure --prefix=/usr/local/python2.7.9
+
+/usr/local/python3.9.0/bin
+
+PATH=$PATH:/usr/local/python3.9.0/bin
+export PATH
+
+Cannot create property=data_file_directories for JavaBean=org.apache.cassandra.config.Config@6e38921c;
+No single argument constructor found for class [Ljava.lang.String;;  in 'reader', line 10, column 1:
+    cluster_name: 'MyCluster'

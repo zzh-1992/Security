@@ -1,0 +1,10 @@
+
+
+
+linux - 卸载python
+2019年10月15日12:05:42
+https://www.cnblogs.com/tnsay/p/11676895.html
+
+[root@spider1 bin]# rpm -qa|grep python|xargs rpm -ev --allmatches --nodeps ##强制删除已安装程序及其关联
+[root@spider1 bin]# whereis python |xargs rm -frv ##删除所有残余文件 ##xargs，允许你对输出执行其他某些命令
+[root@spider1 bin]# whereis python ##验证删除，返回无结果
