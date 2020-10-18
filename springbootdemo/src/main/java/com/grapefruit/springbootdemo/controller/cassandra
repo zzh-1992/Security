@@ -1,4 +1,4 @@
-gude
+guide
 https://cassandra.apache.org/doc/latest/getting_started/index.html
 
 /var/data/cassandra/cdc_raw
@@ -10,7 +10,6 @@ https://cassandra.apache.org/doc/latest/getting_started/index.html
 /var/data/cassandra/hints
 
 /var/data/cassandra/saved_caches
-
 
 wget https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tgz
 
@@ -25,9 +24,7 @@ yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel read
 
 
 =====================================================================
-./configure --prefix=/usr/local/python2.7.9
-
-/usr/local/python3.9.0/bin
+./configure --prefix=/usr/local/python2.7.9//bin
 
 PATH=$PATH:/usr/local/python3.9.0/bin
 export PATH
@@ -35,3 +32,15 @@ export PATH
 Cannot create property=data_file_directories for JavaBean=org.apache.cassandra.config.Config@6e38921c;
 No single argument constructor found for class [Ljava.lang.String;;  in 'reader', line 10, column 1:
     cluster_name: 'MyCluster'
+
+-------cassandra的基本操作--------
+网友博客链接
+https://blog.csdn.net/smile_bestSun/article/details/52790485?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param
+
+创建表
+CREATE TABLE ggg(id int,s_name varchar,PRIMARY KEY(id));
+
+添加数据
+insert into ggg (id,s_name) values (0,'kgf');
+insert into ggg (id,s_name) values (1,'fdfd');
+insert into ggg (id,s_name) values (2,'ssss');
