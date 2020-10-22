@@ -9,9 +9,9 @@ consumer(Controller)
             url="http://grapefruit.provider.read/stu/{id}";
             Map<String,Object> map = new HashMap<String,Object>(1);
             map.put("id",id);
-            ResponseEntity<Stu> forEntity = restTemplate.getForEntity(url, Stu.class, map);
-            Stu stu = forEntity.getBody();
-            Stu[] stuArray = new Stu[1];
+            ResponseEntity<com.grapefruit.Stu> forEntity = restTemplate.getForEntity(url, com.grapefruit.Stu.class, map);
+            com.grapefruit.Stu stu = forEntity.getBody();
+            com.grapefruit.Stu[] stuArray = new com.grapefruit.Stu[1];
             stuArray[0] = stu;
 
             model.addAttribute("stuArray",stuArray);
@@ -42,7 +42,7 @@ public interface Service01 {
      * @return
      */
     @GetMapping("/stu/{id}")
-    Stu queryById(@PathVariable Integer id);
+    com.grapefruit.Stu queryById(@PathVariable Integer id);
 
     /**
      * 查询所有学生
