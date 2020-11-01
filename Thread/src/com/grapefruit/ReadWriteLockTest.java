@@ -16,13 +16,11 @@ public class ReadWriteLockTest {
         //读写锁
         ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
-
         AtomicInteger k = new AtomicInteger();
         System.out.println("--------------");
         Object obj = new Object();
 
         for(int j = 1;j<= 10;j++){
-
             new Thread(() -> {
                 synchronized (obj) {
                     System.out.println("===> " + k.getAndIncrement());

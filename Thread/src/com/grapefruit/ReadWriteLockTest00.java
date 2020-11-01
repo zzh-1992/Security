@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * @author 柚子苦瓜茶
+ * @author 柚子苦瓜茶 Grapefruit
  * @version 1.0
  * @ModifyTime 2020/10/12 19:08:13
  */
@@ -16,13 +16,11 @@ public class ReadWriteLockTest00 {
         //读写锁
         ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
-
         AtomicInteger k = new AtomicInteger();
         System.out.println("--------------");
         Object obj = new Object();
 
         new Thread(() -> {
-
             try {
                 lock.writeLock().lock();
                 Thread.sleep(1000);
