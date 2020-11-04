@@ -1,5 +1,7 @@
 package com.grapefruit;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -23,7 +25,7 @@ public class ThreadPoolTest02 {
         // create pool
         ThreadPoolExecutor executor = new ThreadPoolExecutor(4, 8,30,
                 TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(8),
+                new ArrayBlockingQueue<>(10),
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.DiscardPolicy());
         // 执行异步任务,获取返回值
@@ -36,7 +38,24 @@ public class ThreadPoolTest02 {
         });*/
 
         long begin = System.currentTimeMillis();
-        for (int i = 0; i < 10; i++) {
+
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 19; i++) {
+            list.add(i + "");
+        }
+        for (String s:list) {
+            executor.execute(() ->{
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //System.out.println("Task finish done" + s +  Thread.currentThread());
+
+            });
+        }
+
+        /*for (int i = 0; i < 10; i++) {
             executor.execute(() ->{
                 try {
                     TimeUnit.SECONDS.sleep(1);
@@ -45,7 +64,7 @@ public class ThreadPoolTest02 {
                 }
                 System.out.println("Task finish done" + Thread.currentThread());
             });
-        }
+        }*/
         System.out.println("ActiveCount" + executor.getActiveCount());
         System.out.println("LargestPoolSize" + executor.getLargestPoolSize());
         System.out.println("CorePoolSize:" + executor.getCorePoolSize());
