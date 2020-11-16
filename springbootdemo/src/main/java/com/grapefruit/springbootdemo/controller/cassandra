@@ -37,6 +37,16 @@ No single argument constructor found for class [Ljava.lang.String;;  in 'reader'
 网友博客链接
 https://blog.csdn.net/smile_bestSun/article/details/52790485?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param
 
+docker-cassandra
+docker run --name mycassandra -p9042:9042 -v /usr/cassandra/datadir:/var/lib/cassandra -v /usr/cassandra/cassandra.yaml:/etc/cassandra/cassandra.yaml -d cassandra:3.11
+
+创建空间
+CREATE KEYSPACE "mySpace"
+WITH replication = {'class': 'Strategy name', 'replication_factor' : 'No.Of   replicas'};
+
+CREATE KEYSPACE mySpace
+WITH replication = {'class':'SimpleStrategy', 'replication_factor' : 3};
+
 创建表
 CREATE TABLE ggg(id int,s_name varchar,PRIMARY KEY(id));
 
@@ -44,3 +54,7 @@ CREATE TABLE ggg(id int,s_name varchar,PRIMARY KEY(id));
 insert into ggg (id,s_name) values (7,'kgf');
 insert into ggg (id,s_name) values (5,'fdfd');
 insert into ggg (id,s_name) values (6,'ssss');
+
+Exception encountered during startup:
+If rpc_address is set to a wildcard address (0.0.0.0),
+then you must set broadcast_rpc_address to a value other than 0.0.0.0
